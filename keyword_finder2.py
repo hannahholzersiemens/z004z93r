@@ -2,7 +2,7 @@ import pandas as pd
 import nltk
 from nltk.tokenize import word_tokenize
 import streamlit as st
-
+nltk.download('punkt')
 # Ensure nltk resources are downloaded
 try:
     nltk.data.find('tokenizers/punkt')
