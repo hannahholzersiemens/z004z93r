@@ -3,6 +3,12 @@ import nltk
 from nltk.tokenize import word_tokenize
 import streamlit as st
 
+# Ensure nltk resources are downloaded
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+
 # Define the function to find keywords in text
 def find_keywords_in_text(text, keyword_dict):
     found_keywords = {}
