@@ -1,3 +1,8 @@
+import subprocess
+
+# Install NLTK (if not already installed)
+subprocess.call("pip install nltk", shell=True)
+
 import pandas as pd
 import nltk
 from nltk.tokenize import word_tokenize
