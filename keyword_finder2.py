@@ -7,17 +7,24 @@ import streamlit as st
 # Define the function to find keywords in text
 def find_keywords_in_text(text, keyword_dict):
     found_keywords = {}
-    # Convert the input text to lowercase
     text = text.lower()
     words = word_tokenize(text)
-    text_tokens = ' '.join(words)  # Create a single string of tokens
+    text_tokens = ' '.join(words)
+
+    keyword_positions = {}
 
     for keyword in keyword_dict.keys():
-        # Convert each keyword to lowercase for case-insensitive comparison
-        if keyword.lower() in text_tokens:
-            found_keywords[keyword] = keyword_dict[keyword]
+        keyword_lower = keyword.lower()
+        position = text_tokens.find(keyword_lower)
+        if position != -1:
+            if keyword_dict[keyword] not in keyword_positions or position < keyword_positions[keyword_dict[keyword]]:
+                keyword_positions[keyword_dict[keyword]] = position
+                found_keywords[keyword] = keyword_dict[keyword]
 
-    return found_keywords
+    # Sort found_keywords by their position in the text
+    sorted_keywords = sorted(found_keywords.items(), key=lambda kv: keyword_positions[kv[1]])
+
+    return sorted_keywords
 
 # Streamlit application
 st.title("Keyword Analyzer")
@@ -28,8 +35,8 @@ if uploaded_file is not None:
     # Determine file type and load accordingly
     if uploaded_file.name.endswith('.csv'):
         try:
-            df = pd.read_csv(uploaded_file, encoding='latin-1')
-            df.columns = df.columns.str.strip()
+            df = pd.read_csv(uploaded_file, encoding='latin-1')  # Try different encodings if necessary
+            df.columns = df.columns.str.strip()  # Strip whitespace from column names
         except Exception as e:
             st.error(f"Error reading CSV file: {e}")
             st.stop()
@@ -41,25 +48,20 @@ if uploaded_file is not None:
     industry = st.selectbox("Select your industry", industry_options)
     
     if industry:
-        # Filter keywords by the selected industry and those for all industries
         industry_keywords = df[(df['industry'] == industry) | (df['industry'].str.lower() == 'all')]
         keywords = industry_keywords['keyword'].tolist()
         hyperlinks = industry_keywords['hyperlink'].tolist()
         
-        # Create a dictionary of keywords and their associated hyperlinks
         keyword_dict = dict(zip(keywords, hyperlinks))
         
-        # Prompt user for text input
         text = st.text_area("Please enter the text to analyze")
         
         if st.button("Analyze"):
             if text:
                 found_keywords = find_keywords_in_text(text, keyword_dict)
                 
-                # Convert the found keywords dictionary to a pandas DataFrame
-                output_df = pd.DataFrame(list(found_keywords.items()), columns=['Keyword', 'Hyperlink'])
+                output_df = pd.DataFrame(found_keywords, columns=['Keyword', 'Hyperlink'])
                 
-                # Display the DataFrame
                 st.write(output_df)
             else:
                 st.warning("Please enter text to analyze.")
