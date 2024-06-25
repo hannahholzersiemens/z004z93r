@@ -27,7 +27,7 @@ uploaded_file = st.file_uploader("Upload your file with keywords", type=["csv", 
 if uploaded_file is not None:
     # Determine file type and load accordingly
     if uploaded_file.name.endswith('.csv'):
-        df = pd.read_csv(uploaded_file)
+        df = pd.read_csv(uploaded_file, encoding='utf-8')
     else:
         df = pd.read_excel(uploaded_file)
     
