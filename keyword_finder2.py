@@ -1,5 +1,6 @@
-import pandas as pd
 import nltk
+nltk.download('punkt')  # Add this line to download the 'punkt' tokenizer data
+import pandas as pd
 from nltk.tokenize import word_tokenize
 import streamlit as st
 
