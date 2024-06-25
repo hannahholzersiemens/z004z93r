@@ -59,4 +59,4 @@ if uploaded_file is not None:
             else:
                 st.warning("Please enter text to analyze.")
 else:
-    st.info("Please upload a CSV file to proceed.")
+    st.info("Please upload a file to proceed.")
