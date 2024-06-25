@@ -26,8 +26,12 @@ st.title("Keyword Analyzer")
 uploaded_file = st.file_uploader("Upload your file with keywords", type=["csv", "xlsx", "xls"])
 if uploaded_file is not None:
     # Determine file type and load accordingly
-    if uploaded_file.name.endswith('.csv'):
-        df = pd.read_csv(uploaded_file, encoding='utf-8')
+      if uploaded_file.name.endswith('.csv'):
+        try:
+            df = pd.read_csv(uploaded_file, encoding='utf-8')
+        except Exception as e:
+            st.error(f"Error reading CSV file: {e}")
+            st.stop()
     else:
         df = pd.read_excel(uploaded_file)
     
