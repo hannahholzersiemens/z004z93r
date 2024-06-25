@@ -23,9 +23,13 @@ def find_keywords_in_text(text, keyword_dict):
 st.title("Keyword Analyzer")
 
 # File upload
-uploaded_file = st.file_uploader("Upload your CSV file with keywords", type="csv")
+uploaded_file = st.file_uploader("Upload your file with keywords", type=["csv", "xlsx", "xls"])
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
+    # Determine file type and load accordingly
+    if uploaded_file.name.endswith('.csv'):
+        df = pd.read_csv(uploaded_file)
+    else:
+        df = pd.read_excel(uploaded_file)
     
     # Select industry
     industry_options = ["AD", "AT", "CPR", "ES", "HE", "IM", "MA", "EU", "MD", "SMB"]
