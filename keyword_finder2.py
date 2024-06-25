@@ -28,7 +28,7 @@ if uploaded_file is not None:
     # Determine file type and load accordingly
     if uploaded_file.name.endswith('.csv'):
         try:
-            df = pd.read_csv(uploaded_file, encoding='utf-8')
+            df = pd.read_csv(uploaded_file, encoding='latin-1')
             df.columns = df.columns.str.strip()
         except Exception as e:
             st.error(f"Error reading CSV file: {e}")
