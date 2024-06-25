@@ -17,12 +17,17 @@ def find_keywords_in_text(text, keyword_dict):
         keyword_lower = keyword.lower()
         position = text_tokens.find(keyword_lower)
         if position != -1:
-            if keyword_dict[keyword] not in keyword_positions or position < keyword_positions[keyword_dict[keyword]]:
-                keyword_positions[keyword_dict[keyword]] = position
-                found_keywords[keyword] = keyword_dict[keyword]
+            hyperlink = keyword_dict[keyword]
+            # If the hyperlink is not already in the dictionary or this keyword appears earlier
+            if hyperlink not in keyword_positions or position < keyword_positions[hyperlink]['position']:
+                keyword_positions[hyperlink] = {'position': position, 'keyword': keyword}
+
+    # Create the found_keywords dictionary from keyword_positions
+    for hyperlink, info in keyword_positions.items():
+        found_keywords[info['keyword']] = hyperlink
 
     # Sort found_keywords by their position in the text
-    sorted_keywords = sorted(found_keywords.items(), key=lambda kv: keyword_positions[kv[1]])
+    sorted_keywords = sorted(found_keywords.items(), key=lambda kv: keyword_positions[kv[1]]['position'])
 
     return sorted_keywords
 
