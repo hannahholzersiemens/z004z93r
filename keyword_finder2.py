@@ -49,11 +49,16 @@ if uploaded_file is not None:
         df = pd.read_excel(uploaded_file)
     
     # Select industry
-    industry_options = ["AD", "AT", "CPR", "ES", "HE", "IM", "MA", "EU", "MD", "SMB"]
+    industry_options = ["AD", "AT", "CPR", "ES", "HE", "IM", "MA", "EU", "MD", "SMB", "Not Applicable"]
     industry = st.selectbox("Select your industry", industry_options)
     
     if industry:
-        industry_keywords = df[(df['industry'] == industry) | (df['industry'].str.lower() == 'all')]
+        # Filter keywords based on the selected industry
+        if industry == "Not Applicable":
+            industry_keywords = df[(df['industry'].str.lower() == 'all') | (df['industry'].str.lower() == 'na')]
+        else:
+            industry_keywords = df[(df['industry'] == industry) | (df['industry'].str.lower() == 'all')]
+        
         keywords = industry_keywords['keyword'].tolist()
         hyperlinks = industry_keywords['hyperlink'].tolist()
         
@@ -66,6 +71,12 @@ if uploaded_file is not None:
                 found_keywords = find_keywords_in_text(text, keyword_dict)
                 
                 output_df = pd.DataFrame(found_keywords, columns=['Keyword', 'Hyperlink'])
+                
+                st.write(output_df)
+            else:
+                st.warning("Please enter text to analyze.")
+else:
+    st.info("Please upload a file to proceed.")
                 
                 st.write(output_df)
             else:
