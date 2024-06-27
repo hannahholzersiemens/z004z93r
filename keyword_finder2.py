@@ -77,9 +77,3 @@ if uploaded_file is not None:
                 st.warning("Please enter text to analyze.")
 else:
     st.info("Please upload a file to proceed.")
-                
-            st.write(output_df)
-            else:
-                st.warning("Please enter text to analyze.")
-else:
-    st.info("Please upload a file to proceed.")
