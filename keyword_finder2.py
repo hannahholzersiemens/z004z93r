@@ -49,7 +49,7 @@ if uploaded_file is not None:
         df = pd.read_excel(uploaded_file)
     
     # Select industry
-    industry_options = ["AD", "AT", "CPR", "ES", "HE", "IM", "MA", "EU", "MD", "SMB", "BAT", "Not Applicable"]
+    industry_options = ["AD", "AT", "BAT","CPR", "ES", "EU","HE", "IM", "MA", "MD", "SMB", "Not Applicable"]
     industry = st.selectbox("Select your industry", industry_options)
     
     if industry:
