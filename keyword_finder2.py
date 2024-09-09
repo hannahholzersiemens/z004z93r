@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 
 # Ensure the 'punkt' tokenizer is available
-nltk.download('punkt', quiet=True)
+nltk.download('punkt_tab')
 
 # Define the function to find keywords in text
 def find_keywords_in_text(text, keyword_dict):
